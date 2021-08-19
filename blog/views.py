@@ -1,8 +1,9 @@
 from typing import List
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
     DetailView,
@@ -29,7 +30,22 @@ class PostListView(ListView):
     template_name = 'blog/home.html'  # the default is <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date_posted']  # setup the order of sql query
-    paginate_by = 5 # every page has 5 objects
+    paginate_by = 5  # every page has 5 objects
+
+
+class UserPostListView(ListView):
+    model = Post
+    # the default is <app>/<model>_<viewtype>.html
+    template_name = 'blog/user_posts.html'
+    context_object_name = 'posts'
+    paginate_by = 5  # every page has 5 objects
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        # query the User objects by username, and the username is from url.
+
+        return Post.objects.filter(author=user).order_by('-date_posted')
+        # return all the posts objects posted by the queried user.
 
 
 class PostDetailView(DetailView):
