@@ -137,4 +137,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')#'email address' 
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')#'passoword' 
 
+#DEFAULT_FROM_EMAIL='My name <noreply@mydomain.com>'
 #print(EMAIL_HOST_USER)
