@@ -1,0 +1,9 @@
+{% extends "blog/base.html" %} {% load crispy_forms_tags %} {% block content %}
+<h1 class="mb-3">Overall ({{ following_number }})</h1>
+{% for following in  follow_name_list %}
+    <div class="form-inline" class="article-metadata">
+        <a class="mr-2" href="{% url 'user-posts' following %}">{{ following }}</a>
+    </div>
+
+{% endfor %}
+{% endblock content %}
