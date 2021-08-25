@@ -1,9 +1,11 @@
+from follow.models import Follow
 from typing import List
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.views.generic import (
     ListView,
     DetailView,
@@ -11,15 +13,38 @@ from django.views.generic import (
     UpdateView,
     DeleteView)
 
+#from users.models import Profile
+from follow.models import Follow
+
 # function view
 
 
 def home(request):
 
     context = {
-        'posts': Post.objects.all(),
+        'posts': Post.objects.all().order_by('-date_posted'),
         'title': 'blog-home'
     }
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.success(request, f'Please login first!')
+            return render(request, 'blog/home.html', context)
+        current_user = request.user
+        befollowed_user= request.POST.get('befollowed')
+        print(befollowed_user)
+        print(current_user.username)
+        if befollowed_user==current_user.username:
+            messages.success(request, f'You can not follow yourself!')
+            return render(request, 'blog/home.html', context)
+        follow_exits=Follow.objects.filter(followed=User.objects.get(username=befollowed_user),
+                             fan=current_user)      
+        if not follow_exits:
+            Follow.objects.create(followed=User.objects.get(username=befollowed_user),
+                             fan=current_user)
+            messages.success(request, f'You have successfully followed this guy!')
+        else:
+            messages.success(request, f'You have already followed this guy before!')
+        #return redirect('blog-home')
     return render(request, 'blog/home.html', context)
 
 # class-based view, it is a list-type view

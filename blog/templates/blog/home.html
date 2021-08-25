@@ -3,8 +3,13 @@
 <article class="media content-section">
     <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
     <div class="media-body">
-        <div class="article-metadata">
+        <div class="form-inline" class="article-metadata">
             <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="befollowed" value="{{post.author.username}}" readonly/>
+                <button type="submit" class="btn profile-edit-btn">Follow</button>
+            </form>
             <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
         </div>
         <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>

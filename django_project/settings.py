@@ -40,9 +40,9 @@ INSTALLED_APPS = [
 
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'follow.apps.FollowConfig',
     'crispy_forms',
-    'storages'
-
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +144,7 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-print(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_STORAGE_BUCKET_NAME)
+#print(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_STORAGE_BUCKET_NAME)
 
 AWS_S3_FILE_OVERWRITE = False # do not overwrite files since different users may upload pictures with same name
 AWS_DEFAULT_ACL = None
